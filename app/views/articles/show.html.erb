@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @article.title %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @article.description %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @article.status %>
+</p>
+
+<p>
+  <strong>Author:</strong>
+  <%= @article.author %>
+</p>
+
+<p>
+  <strong>Website:</strong>
+  <%= @article.website %>
+</p>
+
+<p>
+  <strong>Meta title:</strong>
+  <%= @article.meta_title %>
+</p>
+
+<p>
+  <strong>Meta description:</strong>
+  <%= @article.meta_description %>
+</p>
+
+<%= link_to 'Edit', edit_article_path(@article) %> |
+<%= link_to 'Back', articles_path %>
