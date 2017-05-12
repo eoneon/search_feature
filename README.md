@@ -20,6 +20,46 @@ From the `articles#index` view, a user fills in the checkbox form to filter an i
 <% end %>
 ```
 
+#### article#index: controller
+The params hash looks like this:
+```rb
+params #=>
+{
+  "utf8"=>"✓",
+  "article"=>
+    {
+      "methods"=> ["with_author", "pending_review"]
+    },
+  "commit"=>"Search",
+  "controller"=>"articles",
+  "action"=>"index"
+}
+```
+
+Going one level down, we can extract the article params like this:
+```rb
+params[:article] #=> {"methods"=>["with_author", "pending_review"]}
+```
+
+Finally, dropping down another level we can extract the array of keys like this:
+```rb
+params[:article][:methods] #=> ["with_author", "pending_review"]
+```
+
+
+```rb
+class ArticlesController < ApplicationController
+  def index
+    if params[:article]
+      methods = params[:article][:methods]
+      @articles = Article.send_chain(methods)
+    else
+      @articles = Article.all
+    end
+  end
+end
+```
+
 #### article#index: display collection
 
 ```rb
