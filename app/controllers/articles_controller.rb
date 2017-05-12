@@ -2,8 +2,6 @@ class ArticlesController < ApplicationController
   before_action :set_article, only: [:show, :edit, :update, :destroy]
 
   def index
-
-    #
     if params[:article]
       methods = params[:article][:methods]
       @articles = Article.send_chain(methods)

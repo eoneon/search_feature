@@ -20,7 +20,7 @@ From the `articles#index` view, a user fills in the checkbox form to filter an i
 <% end %>
 ```
 
-#### article#index: controller
+#### The params hash
 The params hash looks like this:
 ```rb
 params #=>
@@ -46,7 +46,7 @@ Finally, dropping down another level we can extract the array of keys like this:
 params[:article][:methods] #=> ["with_author", "pending_review"]
 ```
 
-
+#### article#index: controller
 ```rb
 class ArticlesController < ApplicationController
   def index
@@ -60,6 +60,36 @@ class ArticlesController < ApplicationController
 end
 ```
 
+#### Create the Scopes Inside the Model
+```rb
+class Article < ActiveRecord::Base
+  enum status: [ :draft, :pending_review, :flagged, :published]
+
+  #note: the WHERE clause is passed in as an argument
+  #thus we only need the name of the method (key) and not the value for the second method below
+  scope :with_author, -> {(where("'author' IS NOT NULL ")) }
+  scope :with_website, -> {(where("'website' IS NOT NULL ")) }
+  scope :with_meta_title, -> {(where("'meta_title' IS NOT NULL ")) }
+  scope :with_meta_description, -> {(where("'meta_description' IS NOT NULL ")) }
+
+  def self.send_chain(methods)
+    ...
+  end
+end
+```
+#### Call the scopes using inject and send
+```rb
+class Article < ActiveRecord::Base
+  ...
+  def self.send_chain(methods)
+    #methods: arguments from the controller which correspond to scope names
+    #inject: iterates over arguments, and for each string item (self) evaluate using send
+    #returns a chained scope
+    methods.inject(self, :send)
+  end
+end
+```
+
 #### article#index: display collection
 
 ```rb
@@ -67,3 +97,6 @@ end
 ...
 <% end %>
 ```
+
+## Next:
+Modify project by making the scopes dynamic so that a user may manually enter search values. I don't think I need to have a search model. I think all I have to do is pass in the values along with the keys. 
