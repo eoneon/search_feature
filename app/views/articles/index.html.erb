@@ -1,5 +1,6 @@
 <p id="notice"><%= notice %></p>
 
+<%= params[:keys] %>
 <%= form_tag("/articles", method: "get") do %>
   With Author<%= check_box_tag "article[methods][]", "with_author"  %>
   Pending Review<%= check_box_tag "article[methods][]", "pending_review"  %>

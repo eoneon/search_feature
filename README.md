@@ -45,7 +45,8 @@ Finally, dropping down another level we can extract the array of keys like this:
 ```rb
 params[:article][:methods] #=> ["with_author", "pending_review"]
 ```
-
+>This is wrong. The reference to `methods` does not extract the keys of the params hash. Methods comes from the form where we create our searches. The parameters are assigned to article[methods], where the `methods` hash accepts the checkbox value entered by the user.
+>In Blocit and the rest of my apps, I used `name="model[attribute]"` to accept the attribute value. Because the name of the scope does not correspond to this value, we can't use it alone to call our scopes.
 #### article#index: controller
 ```rb
 class ArticlesController < ApplicationController
@@ -99,4 +100,4 @@ end
 ```
 
 ## Next:
-Modify project by making the scopes dynamic so that a user may manually enter search values. I don't think I need to have a search model. I think all I have to do is pass in the values along with the keys. 
+Modify project by making the scopes dynamic so that a user may manually enter search values. I don't think I need to have a search model. I think all I have to do is pass in the values along with the keys.
