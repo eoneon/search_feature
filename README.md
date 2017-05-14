@@ -1,6 +1,8 @@
 == README
 
-# This is a test for building a search feature using scopes.
+# Search Feature v1
+This version uses scopes which are gathered on the search form and assigned to a hash named "methods". The form inputs are all checkboxes where the positive values matches the name of a scope that corresponds to a column.
+
 ## User Flow
 From the `articles#index` view, a user fills in the checkbox form to filter an index of articles. When the user **submits** the form data, the request is routed to the `/articles` path, which in turn maps it to the Article controller. If the params hash is empty, the controller retrieves all articles. But if params evaluates `true`, the action extract the keys from the params hash in order to pass them as arguments to `send_chain`. The `send_chain` method iterates over the array of keys using `inject`, which evaluates them as a chained scope. The results are cashed in an instance variable for displaying on the index view.
 
