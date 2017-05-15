@@ -1,18 +1,20 @@
 class Article < ActiveRecord::Base
-  enum status: [ :draft, :pending_review, :flagged, :published]
 
-  #note: the WHERE clause is passed in as an argument
-  #thus we only need the name of the method (key) and not the value for the second method below
-  scope :with_author, -> {(where("'author' IS NOT NULL ")) }
-  scope :with_website, -> {(where("'website' IS NOT NULL ")) }
-  scope :with_meta_title, -> {(where("'meta_title' IS NOT NULL ")) }
-  scope :with_meta_description, -> {(where("'meta_description' IS NOT NULL ")) }
+  scope :with_author, -> { where(author: "Gunnar") }
 
-  #figure out: methods = params[:article][:methods]
-  def self.send_chain(methods)
-    #methods:
-    #inject: interates over methods object, and for each item (self) it calls send, which evaluates a string (name_of_scope) as a method.
-    #the result is that it chains the collection of scopes which are passe as strings
-    methods.inject(self, :send)
+  def get_hash(params_hsh)
+    params_hsh.delete_if { |k, v| v.nil? }
   end
+
+  #call chained scopes
+  def self.send_chain(get_hash)
+    hsh = get_hash.keys.map { |k| "with_" + k }
+    hsh.inject(self, :send)
+  end
+  # def self.send_chain(params_hsh)
+  #   hsh = params_hsh.delete_if { |k, v| v.nil? }
+  #   kys = hsh.keys
+  #   methods = kys.map { |k| "with_" + k }
+  #   methods.inject(self, :send)
+  # end
 end

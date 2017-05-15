@@ -3,8 +3,8 @@ class ArticlesController < ApplicationController
 
   def index
     if params[:article]
-      methods = params[:article][:methods]
-      @articles = Article.send_chain(methods)
+      params_hsh = params[:article]
+      @articles = Article.send_chain(params_hsh)
     else
       @articles = Article.all
     end
